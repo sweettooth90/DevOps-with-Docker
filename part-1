@@ -15,5 +15,27 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 1.3
 docker run -it ubuntu:16.04 sh -c 'apt-get update && apt-get install -y curl; read website; sleep 3; curl http://$website;'
 
+helsinki.fi output:
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="http://www.helsinki.fi/">here</a>.</p>
+</body></html>
 
 1.4
+script.sh:
+#!/bin/bash
+
+read website; sleep 3; curl http://$website;
+
+Dockerfile:
+FROM ubuntu:16.04
+WORKDIR /mydir
+COPY script.sh .
+RUN apt-get update &&  apt-get install -y curl
+CMD /script.sh
+
+
+1.5

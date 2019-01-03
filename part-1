@@ -79,3 +79,31 @@ docker run -p 8000:8000 -v $(pwd)/logs.txt:/backend-example-docker/logs.txt back
 ---------------------------------------------------------------------------
 
 1.7
+Dockerfile-backend:
+FROM ubuntu:16.04
+WORKDIR /backend-example-docker
+EXPOSE 8000
+RUN apt-get update && apt-get install -y curl npm nodejs git
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN git clone https://github.com/docker-hy/backend-example-docker.git
+RUN npm install
+CMD FRONT_URL=http://localhost:5000 npm start
+
+Dockerfile-frontend:
+FROM ubuntu:16.04
+WORKDIR /frontend-example-docker
+EXPOSE 5000
+RUN apt-get update && apt-get install -y curl npm nodejs git
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN git clone https://github.com/docker-hy/frontend-example-docker.git
+RUN npm install
+CMD API_URL=http://localhost:8000 npm start
+
+Commands:
+touch log.txt
+docker run -p 5000:5000 Dockerfile-backend
+docker run -v $(pwd)/logs.txt:/backend-example-docker/logs.txt -p 8000:8000 Dockerfile-frontend
+
+---------------------------------------------------------------------------
+
+1.8

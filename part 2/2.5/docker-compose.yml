@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+    backend:
+      image: backend-example-docker
+      ports:
+        - 8000:8000
+      environment:
+        - FRONT_URL=http://localhost:5000
+        - REDIS=redis
+        - DB_USERNAME=username
+        - DB_PASSWORD=password
+        - DB_HOST=postgres
+
+    frontend:
+      image: frontend-example-docker
+      ports:
+        - 5000:5000
+      environment:
+        - API_URL=http://localhost:8000
+
+    redis:
+      image: redis
+
+    postgres:
+      image: postgres
+      environment:
+        - POSTGRES_USER=user
+        - POSTGRES_PASSWORD=password
+
+    nginx:
+      image: nginx
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf
+      ports:
+      - 80:80
